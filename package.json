@@ -1,0 +1,26 @@
+{
+  "name": "timewarp",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "lint": "./node_modules/.bin/eslint src/**/*.js* && ./node_modules/.bin/eslint src/**/*.jsx",
+    "lint:fix": "./node_modules/.bin/eslint src/**/*.js* --fix && ./node_modules/.bin/eslint src/**/*.jsx --fix",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-plugin-react": "^7.10.0"
+  }
+}
