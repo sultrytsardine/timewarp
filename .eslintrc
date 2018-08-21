@@ -15,7 +15,14 @@
         "sourceType": "module"
     },
     "globals": {
-        "React": true
+        "React": true,
+        "document": true,
+        "module": true,
+        "require": true,
+        "process": true,
+        "describe": true,
+        "it": true,
+        "expect": true
     },
     "plugins": [
         "react"
@@ -23,7 +30,7 @@
     "rules": {
         "indent": [
             "error",
-            "tab"
+            2
         ],
         "linebreak-style": [
             "error",
