@@ -9,7 +9,7 @@ export const getClientConfiguration = (token) => {
   })
     .then(getStatus)
     .then(data => data.json());
-}
+};
 
 const getStatus = (response) => {
   if (response.ok) {

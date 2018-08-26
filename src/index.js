@@ -7,10 +7,10 @@ import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-	<Provider store={configureStore()}>
-		<App />
-	</Provider>,
-	document.getElementById('root')
+  <Provider store={configureStore()}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
 
 registerServiceWorker();

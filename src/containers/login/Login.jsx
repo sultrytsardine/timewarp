@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import FacebookLogin from 'react-facebook-login';
 import { GoogleLogin } from 'react-google-login';
 import config from '../../config.js';
+import { setAuthenticated } from '../../actions/authentication.js';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
-    this.state = { isAuthenticated: false, user: null, token: ''};
     this.googleResponse = this.googleResponse.bind(this);
+    this.facebookResponse = this.facebookResponse.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   logout() {
+    const { setAuthenticated } = this.props;
     window.localStorage.loginToken = '';
-    this.setState({isAuthenticated: false, token: '', user: null});
+    setAuthenticated({ authenticated: false, token: null, user: null });
   }
-    
-  twitterResponse(response) {}
+  
+  //TODO: add twitter and FB
+  // twitterResponse(response) {}
 
-  facebookResponse(response) {}
+  // facebookResponse(response) {}
 
   googleResponse(response) {
-    const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken}, null, 2)], {type : 'application/json'});
+    const { setAuthenticated } = this.props;
+    const tokenBlob = this.getTokenBlob(response.accessToken);
     const options = {
       method: 'POST',
       body: tokenBlob,
@@ -31,11 +38,18 @@ export default class Login extends Component {
       const token = r.headers.get('x-auth-token');
       r.json().then(user => {
         if (token) {
-          this.setState({isAuthenticated: true, user, token});
+          setAuthenticated({ authenticated: true, user, token });
           window.localStorage['timewarp-token'] = token;
         }
       });
     });
+  }
+
+  getTokenBlob(accessToken) {
+    return new Blob(
+      [JSON.stringify({ access_token: accessToken }, null, 2)],
+      { type : 'application/json' }
+    s);
   }
 
   onFailure(error) {
@@ -43,12 +57,14 @@ export default class Login extends Component {
   }
 
   render() {
-    let content = this.state.isAuthenticated ?
+    const { authenticated, user: { email } } = this.props;
+    // TODO: keeps reloading buttons?
+    let content = authenticated ?
       (
         <div>
           <p>Authenticated</p>
           <div>
-            {this.state.user.email}
+            {email} 
           </div>
           <div>
             <button onClick={this.logout} className="button">
@@ -80,3 +96,20 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  authenticated: state.authenticated,
+  user: state.user
+}); 
+
+const mapDispatchToProps = {
+  setAuthenticated
+};
+
+Login.propTypes = {
+  authenticated: PropTypes.bool,
+  setAuthenticated: PropTypes.func,
+  user: PropTypes.object
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
